@@ -9,6 +9,9 @@ import {
 } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "./_components/app-sidevar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,25 +38,32 @@ export default function RootLayout({
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <header className="flex justify-end items-center p-4 gap-4 h-16 bg-white border border-black">
-            {/* Show the sign-in and sign-up buttons when the user is signed out */}
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton>
-                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </SignedOut>
-            {/* Show the user button when the user is signed in */}
-            <SignedIn>
-              <div className="flex flex-row gap-340">
-                <h1 className="font-bold text-black">Quiz app</h1>
-                <UserButton />
-              </div>
-            </SignedIn>
-          </header>
-          {children}
+          <SidebarProvider defaultOpen={true}>
+            <AppSidebar />
+            <header className="flex justify-end items-center p-4 gap-4 h-16 bg-white border border-black fixed top-0 left-0 right-0 z-20">
+              <div className="flex-1" />
+              {/* Show the sign-in and sign-up buttons when the user is signed out */}
+              <SignedOut>
+                <SignInButton />
+                <SignUpButton>
+                  <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </SignedOut>
+              {/* Show the user button when the user is signed in */}
+              <SignedIn>
+                <div className="flex flex-row gap-4 items-center gap-330">
+                  <h1 className="font-bold text-black ">Quiz app</h1>
+                  <UserButton />
+                </div>
+              </SignedIn>
+            </header>
+
+            <div className="flex min-h-screen pt-16">
+              <main className="flex-1 p-6">{children}</main>
+            </div>
+          </SidebarProvider>
         </body>
       </html>
     </ClerkProvider>
